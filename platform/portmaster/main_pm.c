@@ -21,9 +21,18 @@ const char *pm_data_path(void) {
     return "./data";
 }
 
-void fatal_error(const char *msg) {
-    printf("FATAL: %s\n", msg);
+void fatal_error(const char *fmt, ...) {
+    va_list args;
+
+    printf("FATAL: ");
+
+    va_start(args, fmt);
+    vprintf(fmt, args);
+    va_end(args);
+
+    printf("\n");
     fflush(stdout);
+
     exit(1);
 }
 
