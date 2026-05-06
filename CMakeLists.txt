@@ -18,7 +18,7 @@ include_directories(
 )
 
 add_executable(gtactw.armhf
-    loader/so_util.c
+    platform/portmaster/so_util_pm.c
 
     platform/portmaster/main_pm.c
     platform/portmaster/sdl_pm.c
