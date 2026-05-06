@@ -1,0 +1,28 @@
+{
+  "version": 2,
+  "name": "gtactw.zip",
+  "items": [
+    "GTA Chinatown Wars.sh",
+    "gtactw"
+  ],
+  "items_opt": null,
+  "attr": {
+    "title": "Grand Theft Auto: Chinatown Wars",
+    "desc": "PortMaster loader for the Android ARMv7 version of GTA Chinatown Wars.",
+    "inst": "Requires legally obtained Android v1.04 APK and OBB files. Place libCTW.so, assets and OBB contents inside gtactw/data.",
+    "genres": [
+      "action",
+      "adventure"
+    ],
+    "porter": [
+      "seu_nome"
+    ],
+    "image": {},
+    "rtr": false,
+    "runtime": null,
+    "reqs": [],
+    "arch": [
+      "armhf"
+    ]
+  }
+}
