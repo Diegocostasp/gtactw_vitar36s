@@ -1,6 +1,15 @@
 #ifndef __SO_UTIL_H__
 #define __SO_UTIL_H__
 
+#include <stdint.h>
+#include <stddef.h>
+
+#ifdef PORTMASTER_LINUX
+typedef int SceUID;
+#else
+#include <psp2/types.h>
+#endif
+
 #include "elf.h"
 
 #define ALIGN_MEM(x, align) (((x) + ((align) - 1)) & ~((align) - 1))
