@@ -1,0 +1,74 @@
+name: Build PortMaster ARMHF
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - portmaster-linux
+      - main
+      - master
+
+jobs:
+  build-armhf:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Enable ARMHF architecture
+        run: |
+          sudo dpkg --add-architecture armhf
+          sudo apt-get update
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get install -y \
+            cmake \
+            ninja-build \
+            build-essential \
+            pkg-config \
+            gcc-arm-linux-gnueabihf \
+            g++-arm-linux-gnueabihf \
+            libc6-dev:armhf \
+            libstdc++-11-dev:armhf \
+            libsdl2-dev:armhf \
+            libopenal-dev:armhf \
+            libmpg123-dev:armhf \
+            libegl1-mesa-dev:armhf \
+            libgles2-mesa-dev:armhf \
+            zlib1g-dev:armhf \
+            zip \
+            file
+
+      - name: Configure CMake
+        run: |
+          cmake -S . -B build-portmaster \
+            -G Ninja \
+            -DCMAKE_TOOLCHAIN_FILE=cmake/armhf.cmake \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DPORTMASTER_LINUX=ON
+
+      - name: Build
+        run: |
+          cmake --build build-portmaster --verbose
+
+      - name: Check binary type
+        run: |
+          file build-portmaster/gtactw.armhf || true
+
+      - name: Prepare PortMaster package
+        run: |
+          mkdir -p dist/gtactw/gtactw
+          cp build-portmaster/gtactw.armhf dist/gtactw/gtactw/
+          cp -r portmaster/gtactw/* dist/gtactw/
+          chmod +x "dist/gtactw/GTA Chinatown Wars.sh"
+          chmod +x "dist/gtactw/gtactw/gtactw.armhf"
+          cd dist
+          zip -r gtactw-portmaster-armhf.zip gtactw
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: gtactw-portmaster-armhf
+          path: dist/gtactw-portmaster-armhf.zip
